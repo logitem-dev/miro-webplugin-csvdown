@@ -2,16 +2,24 @@ const iconExportCsv = '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/sv
 const iconCardBatch = '<svg id="Layer_1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#231f20;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><title></title><rect class="cls-1" height="25" width="38" x="1" y="7"></rect><polyline class="cls-1" points="39 17 47 17 47 42 9 42 9 32"></polyline><line class="cls-1" x1="10" x2="30" y1="17" y2="17"></line><line class="cls-1" x1="10" x2="30" y1="23" y2="23"></line></svg'
 
 
-
 miro.onReady(() => {
   miro.initialize({
     extensionPoints: {
+      bottomBar: {
+        title: 'ｶｰﾄﾞ一括登録',
+        svgIcon: iconCardBatch, 
+        positionPriority: 1,
+        onClick: async () => {
+	 	    await miro.board.ui.openModal('createstickerBatch.html', { width: 300, height: 200 });
+        }
+      }    
       toolbar: {
         title: 'CSVﾀﾞｳﾝﾛｰﾄﾞ',
         toolbarSvgIcon: iconExportCsv, 
         librarySvgIcon: iconExportCsv, 
         positionPriority: 2,
         onClick: async () => {
+
           const client_id = '3074457361560843499';        // MetaData読み込み用
 
           const frameclass = class{
@@ -96,18 +104,12 @@ miro.onReady(() => {
           //createObjectURLで作成したオブジェクトURLを開放する
           (window.URL || window.webkitURL).revokeObjectURL(url);
 
-          // Show success message
-          miro.showNotification('Exportが正常に完了しました。')  
-      	}
+	        // Show success message
+	         miro.showNotification('Exportが正常に完了しました。')  
+			
+		  }
+
       }
-      bottomBar: {
-        title: 'ｶｰﾄﾞ一括登録',
-        svgIcon: iconCardBatch, 
-        positionPriority: 1,
-        onClick: async () => {
-			    await miro.board.ui.openModal('createstickerBatch.html', { width: 300, height: 200 });
-        }
-     }
     }
   })  
 })
