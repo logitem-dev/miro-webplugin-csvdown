@@ -14,12 +14,13 @@ miro.onReady(() => {
           const client_id = '3074457361560843499';        // MetaData読み込み用
 
           const frameclass = class{
-            constructor(name, x, y, width, height){
+            constructor(name, x1, x2, y1, y2, comment){
               this.name = name;
-              this.x1 = x - width/2;
-              this.x2 = x + width/2;
-              this.y1 = y - height/2;
-              this.y2 = y + height/2;
+              this.x1 = x1;
+              this.x2 = x2;
+              this.y1 = y1;
+              this.y2 = y2;
+              this.comment = comment;
             }
           }
 
@@ -27,15 +28,31 @@ miro.onReady(() => {
         
           // 全エリアFrameオブジェクトの取得
           let allFrames = await miro.board.widgets.get({type: 'Frame'});
+          
+          // 全Stickerオブジェクトの取得(エリア上に配置されている備考)
+          let allStickers = await miro.board.widgets.get({type: 'Sticker'});
 
           // クラス配列に追加
           allFrames.forEach(frame => {
+          
+			var x1 = frame.bounds.x - frame.bounds.width/2;
+            var x2 = frame.bounds.x + frame.bounds.width/2;
+			var y1 = frame.bounds.y - frame.bounds.height/2;
+			var y2 = frame.bounds.y + frame.bounds.height/2;
+          
+          	var comment = "";
+          	// Frame内に備考Stickerが存在するか確認
+          	allStickers.forEach(sticker => {
+                if(sticker.x >= x1 && sticker.x <= x2 && sticker.y >= y1 && sticker.y <= y2){
+                	comment = sticker.plainText;
+                }
+          	});
 
-            frames.push(new frameclass(frame.title, frame.bounds.x, frame.y, frame.width, frame.bounds.height));
+            frames.push(new frameclass(frame.title, x1, x2, y1, y2, comment));
           });
 
           frames = frames.filter(frame=> !(frame.name === '出勤者'));
-
+                    
           // 全イメージオブジェクトの取得
           let allCards = await miro.board.widgets.get({type: 'IMAGE'});
 
@@ -59,7 +76,7 @@ miro.onReady(() => {
               	var frame = frames[i];
                 if(card.x >= frame.x1 && card.x <= frame.x2 && card.y >= frame.y1 && card.y <= frame.y2){
                   areaName = frame.name;
-                  csvData+= staffid + "," + frame.name + "\n";
+                  csvData+= staffid + "," + frame.name + "," + frame.comment + "\n";
                   break;
                 }
               }
