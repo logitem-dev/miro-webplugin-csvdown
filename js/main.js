@@ -5,14 +5,14 @@ const iconCardBatch = '<svg id="Layer_1" viewBox="0 0 48 48" xmlns="http://www.w
 miro.onReady(() => {
   miro.initialize({
     extensionPoints: {
-      bottomBar: {
-        title: 'ｶｰﾄﾞ一括登録',
-        svgIcon: iconCardBatch, 
-        positionPriority: 1,
-        onClick: async () => {
-	 	    await miro.board.ui.openModal('createstickerBatch.html', { width: 300, height: 200 });
-        }
-      },    
+//      bottomBar: {
+//        title: 'ｶｰﾄﾞ一括登録',
+//        svgIcon: iconCardBatch, 
+//        positionPriority: 1,
+//        onClick: async () => {
+//	 	    await miro.board.ui.openModal('createstickerBatch.html', { width: 300, height: 200 });
+//        }
+//      },  
       toolbar: {
         title: 'CSVﾀﾞｳﾝﾛｰﾄﾞ',
         toolbarSvgIcon: iconExportCsv, 
