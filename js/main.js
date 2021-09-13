@@ -12,7 +12,6 @@ miro.onReady(() => {
         librarySvgIcon: iconExportCsv, 
         positionPriority: 2,
         onClick: async () => {
-
           const client_id = '3074457361560843499';        // MetaData読み込み用
 
           const frameclass = class{
@@ -97,11 +96,8 @@ miro.onReady(() => {
           //createObjectURLで作成したオブジェクトURLを開放する
           (window.URL || window.webkitURL).revokeObjectURL(url);
 
-	        // Show success message
-	         miro.showNotification('Exportが正常に完了しました。')  
-			
-		  }
-
+          // Show success message
+          miro.showNotification('Exportが正常に完了しました。')  
       	}
       }
       bottomBar: {
@@ -111,6 +107,7 @@ miro.onReady(() => {
         onClick: async () => {
 			    await miro.board.ui.openModal('createstickerBatch.html', { width: 300, height: 200 });
         }
+     }
     }
   })  
 })
