@@ -12,7 +12,7 @@ miro.onReady(() => {
         onClick: async () => {
 	 	    await miro.board.ui.openModal('createstickerBatch.html', { width: 300, height: 200 });
         }
-      }    
+      },    
       toolbar: {
         title: 'CSVﾀﾞｳﾝﾛｰﾄﾞ',
         toolbarSvgIcon: iconExportCsv, 
