@@ -60,7 +60,7 @@ miro.onReady(() => {
             frames.push(new frameclass(frame.title, x1, x2, y1, y2));
           });
 
-          frames = frames.filter(frame=> !(frame.name.indexOf('出勤者') != -1);
+          frames = frames.filter(frame=> frame.name.indexOf('出勤者') === -1);
 
           // 全イメージオブジェクトの取得
           let allCards = await miro.board.widgets.get({type: 'IMAGE'});
