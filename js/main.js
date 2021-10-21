@@ -23,13 +23,13 @@ miro.onReady(() => {
           const client_id = '3074457361560843499';        // MetaData読み込み用
 
           const frameclass = class{
-            constructor(name, x1, x2, y1, y2, comment){
+            constructor(name, x1, x2, y1, y2){
               this.name = name;
               this.x1 = x1;
               this.x2 = x2;
               this.y1 = y1;
               this.y2 = y2;
-              this.comment = comment;
+  //            this.comment = comment;
             }
           }
 
@@ -38,8 +38,8 @@ miro.onReady(() => {
           // 全エリアFrameオブジェクトの取得
           let allFrames = await miro.board.widgets.get({type: 'Frame'});
           
-          // 全Stickerオブジェクトの取得(エリア上に配置されている備考)
-          let allStickers = await miro.board.widgets.get({type: 'Sticker'});
+//          // 全Stickerオブジェクトの取得(エリア上に配置されている備考)
+//          let allStickers = await miro.board.widgets.get({type: 'Sticker'});
 
           // クラス配列に追加
           allFrames.forEach(frame => {
@@ -50,18 +50,18 @@ miro.onReady(() => {
 			var y2 = frame.bounds.y + frame.bounds.height/2;
           
           	var comment = "";
-          	// Frame内に備考Stickerが存在するか確認
-          	allStickers.forEach(sticker => {
-                if(sticker.x >= x1 && sticker.x <= x2 && sticker.y >= y1 && sticker.y <= y2){
-                	comment = sticker.plainText;
-                }
-          	});
+//          	// Frame内に備考Stickerが存在するか確認
+//          	allStickers.forEach(sticker => {
+//                if(sticker.x >= x1 && sticker.x <= x2 && sticker.y >= y1 && sticker.y <= y2){
+//                	comment = sticker.plainText;
+//                }
+//          	});
 
-            frames.push(new frameclass(frame.title, x1, x2, y1, y2, comment));
+            frames.push(new frameclass(frame.title, x1, x2, y1, y2));
           });
 
-          frames = frames.filter(frame=> !(frame.name === '出勤者'));
-                    
+          frames = frames.filter(frame=> !(frame.name.indexOf('出勤者') != -1);
+
           // 全イメージオブジェクトの取得
           let allCards = await miro.board.widgets.get({type: 'IMAGE'});
 
@@ -85,13 +85,34 @@ miro.onReady(() => {
               	var frame = frames[i];
                 if(card.x >= frame.x1 && card.x <= frame.x2 && card.y >= frame.y1 && card.y <= frame.y2){
                   areaName = frame.name;
-                  csvData+= staffid + "," + frame.name + "," + frame.comment + "\n";
+                  csvData+= staffid + "," + frame.name + "\n";
                   break;
                 }
               }
             }
 
           });
+          
+          // 周知事項Frame内のオブジェクトを取得
+		  let notificationfrs = allFrames.filter(frame=> frame.title.indexOf('周知事項') != -1);
+            		  
+  		  for(var i=0; i<notificationfrs.length; i++){
+  		  	
+  		  		var frame = notificationfrs[i];
+				var widgets = frame.childrenIds;
+				var strCsv = "*" + frame.title;
+				
+				for(var j=0; j< widgets.length; j++){
+					let childwidget = await miro.board.widgets.get({id: widgets[j]});
+					var widgettext = childwidget[0].plainText;
+					if( widgettext != null){
+						strCsv = strCsv + "," + widgettext;
+					}
+				}
+				// CSV出力
+				csvData += strCsv + "\n";
+       　 }
+  		 
 
           // CSVダウンロード
           const bom = new Uint8Array([0xef, 0xbb, 0xbf]);
