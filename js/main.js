@@ -34,6 +34,7 @@ miro.onReady(() => {
               var badge = fromjson[client_id]['badge'] || '';
               var cardColor = fromjson[client_id]['card_color'] || '';
               card.title = staffid + '_' + staffName + '_' + workHour  + '_' + restHour + '_' + badge + '_' + cardColor;
+              alert(api_uri + 's3/' + staffid + '.png');
               card.url = api_uri + 's3/' + staffid + '.png'
               miro.board.widgets.update(card);
             }
