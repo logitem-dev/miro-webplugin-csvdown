@@ -13,7 +13,7 @@ miro.onReady(() => {
 //	 	    await miro.board.ui.openModal('createstickerBatch.html', { width: 300, height: 200 });
 
 
-		  const client_id = '3458764516006800161';
+		  const client_id = '3458764516005074638';
 		  const api_uri = 'https://logitem-dev.herokuapp.com/';
 		  
           // 全イメージオブジェクトの取得
@@ -34,7 +34,6 @@ miro.onReady(() => {
               var badge = fromjson[client_id]['badge'] || '';
               var cardColor = fromjson[client_id]['card_color'] || '';
               card.title = staffid + '_' + staffName + '_' + workHour  + '_' + restHour + '_' + badge + '_' + cardColor;
-              alert(api_uri + 's3/' + staffid + '.png');
               card.url = api_uri + 's3/' + staffid + '.png'
               miro.board.widgets.update(card);
             }
