@@ -14,6 +14,8 @@ miro.onReady(() => {
 
 
 		  const client_id = '3458764516006800161';
+		  const api_uri = 'https://logitem-dev.herokuapp.com/';
+		  
           // 全イメージオブジェクトの取得
           var allCards = await miro.board.widgets.get({type: 'IMAGE'});
           
@@ -32,6 +34,8 @@ miro.onReady(() => {
               var badge = fromjson[client_id]['badge'] || '';
               var cardColor = fromjson[client_id]['card_color'] || '';
               card.title = staffid + '_' + staffName + '_' + workHour  + '_' + restHour + '_' + badge + '_' + cardColor;
+              card.ur = api_uri + 's3/' + staffid + '.png'
+              miro.board.widgets.update(card);
             }
 
           });
